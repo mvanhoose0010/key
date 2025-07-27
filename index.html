@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Celebrity Death Year Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .quiz-box {
+      background: #1e1e1e;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      max-width: 600px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    button.year-btn {
+      padding: 8px 12px;
+      font-size: 1rem;
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      min-width: 60px;
+    }
+    button.year-btn:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+    button#nextBtn {
+      margin-top: 10px;
+      display: none;
+      background-color: #28a745;
+    }
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box">
+    <h1 id="question">What year did [Celebrity] die?</h1>
+    <div class="button-container" id="options"></div>
+    <div class="result" id="result"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
+  </div>
+
+  <script>
+    const START_YEAR = 2000;
+    const END_YEAR = 2019;
+
+    const questions = [
+      { name: "Robin Williams", year: 2014 },
+      { name: "Princess Diana", year: 1997 },
+      { name: "Chadwick Boseman", year: 2020 },
+      { name: "Whitney Houston", year: 2012 },
+      { name: "Michael Jackson", year: 2009 },
+      { name: "Aretha Franklin", year: 2018 },
+      { name: "Heath Ledger", year: 2008 },
+      { name: "Betty White", year: 2021 },
+      { name: "Steve Jobs", year: 2011 },
+      { name: "David Bowie", year: 2016 },
+      { name: "Prince", year: 2016 },
+      { name: "Stan Lee", year: 2018 },
+      { name: "Kobe Bryant", year: 2020 },
+      { name: "Anthony Bourdain", year: 2018 },
+      { name: "Carrie Fisher", year: 2016 },
+      { name: "Paul Walker", year: 2013 },
+      { name: "Alan Rickman", year: 2016 },
+      { name: "Tom Petty", year: 2017 },
+      { name: "Philip Seymour Hoffman", year: 2014 },
+      { name: "Nelson Mandela", year: 2013 }
+    ];
+
+    let current = 0;
+
+    function createYearButtons() {
+      const optionsContainer = document.getElementById("options");
+      for (let y = START_YEAR; y <= END_YEAR; y++) {
+        const btn = document.createElement("button");
+        btn.className = "year-btn";
+        btn.textContent = y;
+        btn.onclick = () => checkAnswer(y);
+        optionsContainer.appendChild(btn);
+      }
+    }
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById("question").innerText = `What year did ${q.name} die?`;
+
+      document.querySelectorAll(".year-btn").forEach(btn => {
+        btn.disabled = false;
+        btn.style.backgroundColor = "#0d6efd";
+      });
+
+      document.getElementById("result").innerText = "";
+      document.getElementById("nextBtn").style.display = "none";
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[current].year;
+      const resultEl = document.getElementById("result");
+
+      if (Math.abs(selected - correct) <= 1) {
+        resultEl.innerText = "✅ Correct!";
+        resultEl.style.color = "lightgreen";
+      } else {
+        resultEl.innerText = `❌ Incorrect. ${questions[current].name} died in ${correct}.`;
+        resultEl.style.color = "tomato";
+      }
+
+      document.querySelectorAll(".year-btn").forEach(btn => {
+        btn.disabled = true;
+        if (parseInt(btn.textContent) === correct) {
+          btn.style.backgroundColor = "green";
+        }
+      });
+
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        loadQuestion();
+      } else {
+        document.getElementById("question").innerText = "Quiz complete!";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("result").innerText = "Thanks for playing!";
+      }
+    }
+
+    createYearButtons();
+    loadQuestion();
+  </script>
+</body>
+</html>
