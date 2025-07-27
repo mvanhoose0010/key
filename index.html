@@ -78,14 +78,6 @@
     const END_YEAR = 2024;
 
     const questions = [
-      { name: "Gary Coleman", year: 2010 },
-      { name: "Bernie Mac", year: 2008 },
-      { name: "Neil Armstrong", year: 2012 },
-      { name: "Andy Griffith", year: 2012 },
-      { name: "Nelson Mandela", year: 2013 },
-      { name: "John F. Kennedy", year: 1963 },
-      { name: "George H. W. Bush", year: 2018 },
-      { name: "Jimmy Carter", year: 2024 },
       { name: "Robin Williams", year: 2014 },
       { name: "Princess Diana", year: 1997 },
       { name: "Chadwick Boseman", year: 2020 },
@@ -103,3 +95,81 @@
       { name: "Carrie Fisher", year: 2016 },
       { name: "Paul Walker", year: 2013 },
       { name: "Alan Rickman", year: 2016 },
+      { name: "Tom Petty", year: 2017 },
+      { name: "Philip Seymour Hoffman", year: 2014 },
+      { name: "Nelson Mandela", year: 2013 }
+      { name: "Gary Coleman", year: 2010 },
+      { name: "Bernie Mac", year: 2008 },
+      { name: "Neil Armstrong", year: 2012 },
+      { name: "Andy Griffith", year: 2012 },
+      { name: "Nelson Mandela", year: 2013 },
+      { name: "John F. Kennedy", year: 1963 },
+      { name: "George H. W. Bush", year: 2018 },
+      { name: "Jimmy Carter", year: 2024 },
+    ];
+
+    let current = 0;
+
+    function createYearButtons() {
+      const optionsContainer = document.getElementById("options");
+      for (let y = START_YEAR; y <= END_YEAR; y++) {
+        const btn = document.createElement("button");
+        btn.className = "year-btn";
+        btn.textContent = y;
+        btn.onclick = () => checkAnswer(y);
+        optionsContainer.appendChild(btn);
+      }
+    }
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById("question").innerText = `What year did ${q.name} die?`;
+
+      document.querySelectorAll(".year-btn").forEach(btn => {
+        btn.disabled = false;
+        btn.style.backgroundColor = "#0d6efd";
+      });
+
+      document.getElementById("result").innerText = "";
+      document.getElementById("nextBtn").style.display = "none";
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[current].year;
+      const resultEl = document.getElementById("result");
+
+      if (Math.abs(selected - correct) <= 1) {
+        resultEl.innerText = "✅ Correct!";
+        resultEl.style.color = "lightgreen";
+      } else {
+        resultEl.innerText = `❌ Incorrect. ${questions[current].name} died in ${correct}.`;
+        resultEl.style.color = "tomato";
+      }
+
+      document.querySelectorAll(".year-btn").forEach(btn => {
+        btn.disabled = true;
+        if (parseInt(btn.textContent) === correct) {
+          btn.style.backgroundColor = "green";
+        }
+      });
+
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        loadQuestion();
+      } else {
+        document.getElementById("question").innerText = "Quiz complete!";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("result").innerText = "Thanks for playing!";
+      }
+    }
+
+    createYearButtons();
+    loadQuestion();
+  </script>
+</body>
+</html>
