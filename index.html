@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +19,7 @@
       padding: 20px 30px;
       border-radius: 10px;
       box-shadow: 0 0 10px #000;
-      max-width: 600px;
+      max-width: 1000px;
       text-align: center;
     }
     h1 {
@@ -31,18 +30,20 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
+      max-height: 400px;
+      overflow-y: auto;
       margin-bottom: 15px;
     }
     button.year-btn {
-      padding: 8px 12px;
-      font-size: 1rem;
+      padding: 6px 10px;
+      font-size: 0.9rem;
       background-color: #0d6efd;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      min-width: 60px;
+      min-width: 50px;
     }
     button.year-btn:disabled {
       background-color: #555;
@@ -52,6 +53,11 @@
       margin-top: 10px;
       display: none;
       background-color: #28a745;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
     }
     .result {
       font-weight: bold;
@@ -68,10 +74,18 @@
   </div>
 
   <script>
-    const START_YEAR = 2000;
-    const END_YEAR = 2019;
+    const START_YEAR = 1925;
+    const END_YEAR = 2024;
 
     const questions = [
+      { name: "Gary Coleman", year: 2010 },
+      { name: "Bernie Mac", year: 2008 },
+      { name: "Neil Armstrong", year: 2012 },
+      { name: "Andy Griffith", year: 2012 },
+      { name: "Nelson Mandela", year: 2013 },
+      { name: "John F. Kennedy", year: 1963 },
+      { name: "George H. W. Bush", year: 2018 },
+      { name: "Jimmy Carter", year: 2024 },
       { name: "Robin Williams", year: 2014 },
       { name: "Princess Diana", year: 1997 },
       { name: "Chadwick Boseman", year: 2020 },
@@ -89,73 +103,3 @@
       { name: "Carrie Fisher", year: 2016 },
       { name: "Paul Walker", year: 2013 },
       { name: "Alan Rickman", year: 2016 },
-      { name: "Tom Petty", year: 2017 },
-      { name: "Philip Seymour Hoffman", year: 2014 },
-      { name: "Nelson Mandela", year: 2013 }
-    ];
-
-    let current = 0;
-
-    function createYearButtons() {
-      const optionsContainer = document.getElementById("options");
-      for (let y = START_YEAR; y <= END_YEAR; y++) {
-        const btn = document.createElement("button");
-        btn.className = "year-btn";
-        btn.textContent = y;
-        btn.onclick = () => checkAnswer(y);
-        optionsContainer.appendChild(btn);
-      }
-    }
-
-    function loadQuestion() {
-      const q = questions[current];
-      document.getElementById("question").innerText = `What year did ${q.name} die?`;
-
-      document.querySelectorAll(".year-btn").forEach(btn => {
-        btn.disabled = false;
-        btn.style.backgroundColor = "#0d6efd";
-      });
-
-      document.getElementById("result").innerText = "";
-      document.getElementById("nextBtn").style.display = "none";
-    }
-
-    function checkAnswer(selected) {
-      const correct = questions[current].year;
-      const resultEl = document.getElementById("result");
-
-      if (Math.abs(selected - correct) <= 1) {
-        resultEl.innerText = "✅ Correct!";
-        resultEl.style.color = "lightgreen";
-      } else {
-        resultEl.innerText = `❌ Incorrect. ${questions[current].name} died in ${correct}.`;
-        resultEl.style.color = "tomato";
-      }
-
-      document.querySelectorAll(".year-btn").forEach(btn => {
-        btn.disabled = true;
-        if (parseInt(btn.textContent) === correct) {
-          btn.style.backgroundColor = "green";
-        }
-      });
-
-      document.getElementById("nextBtn").style.display = "inline-block";
-    }
-
-    function nextQuestion() {
-      current++;
-      if (current < questions.length) {
-        loadQuestion();
-      } else {
-        document.getElementById("question").innerText = "Quiz complete!";
-        document.getElementById("options").innerHTML = "";
-        document.getElementById("nextBtn").style.display = "none";
-        document.getElementById("result").innerText = "Thanks for playing!";
-      }
-    }
-
-    createYearButtons();
-    loadQuestion();
-  </script>
-</body>
-</html>
