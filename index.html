@@ -13,7 +13,7 @@
     p.lead{margin:0 0 18px;color:var(--muted)}
     .panel{background:rgba(255,255,255,0.02);padding:16px;border-radius:10px}
     label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input[type="text"], input[type="password"], textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef8}
+    input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef8}
     .inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .controls{display:flex;gap:8px;align-items:center;margin-top:12px}
     button{background:var(--accent);color:#07203a;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
@@ -30,17 +30,17 @@
 <body>
   <div class="wrap">
     <h1>Double-Key Confirmation Dialog</h1>
-    <p class="lead">Type the same characters into both fields. Once they match, the dialog becomes clickable — click it to copy the confirmed value.</p>
+    <p class="lead">Type the same characters into both fields. Once they match, the value will automatically copy to your clipboard and the fields will clear.</p>
 
     <div class="panel">
       <div class="inputs">
         <div>
           <label for="first">Enter value (first key)</label>
-          <input id="first" type="text" autocomplete="off" inputmode="text" placeholder="Type value here" />
+          <input id="first" type="text" autocomplete="off" placeholder="Type value here" />
         </div>
         <div>
           <label for="second">Re-enter value (double key)</label>
-          <input id="second" type="text" autocomplete="off" inputmode="text" placeholder="Re-type the same value" />
+          <input id="second" type="text" autocomplete="off" placeholder="Re-type the same value" />
         </div>
       </div>
 
@@ -52,8 +52,6 @@
       <div class="dialog" aria-live="polite">
         <div id="dialogBtn" class="dialog-btn" role="button" aria-disabled="true">(empty) — double-key to enable</div>
       </div>
-
-      <div style="margin-top:12px" class="small">Notes: The confirmed value is copied exactly as entered. Matching is case-sensitive. Empty values will not enable the dialog.</div>
     </div>
   </div>
 
@@ -74,7 +72,28 @@
       showToast._t = setTimeout(()=> toast.style.display = 'none', 1200);
     }
 
-    function updateState(){
+    function clearAll(){
+      first.value = '';
+      second.value = '';
+      updateState(false);
+      first.focus();
+    }
+
+    async function copyToClipboard(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast('Copied: ' + text);
+        clearAll();
+      }catch(e){
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try{document.execCommand('copy'); showToast('Copied (fallback)');}finally{document.body.removeChild(ta); clearAll();}
+      }
+    }
+
+    function updateState(autoCopy = true){
       const v1 = first.value;
       const v2 = second.value;
       const nonEmpty = v1.length > 0 && v2.length > 0;
@@ -85,44 +104,27 @@
         dialogBtn.setAttribute('aria-disabled','false');
         dialogBtn.textContent = v1;
         status.textContent = 'Confirmed ✓';
-        status.style.color = '';
+        if(autoCopy) copyToClipboard(v1);
       }else{
         dialogBtn.classList.remove('enabled');
         dialogBtn.setAttribute('aria-disabled','true');
         dialogBtn.textContent = nonEmpty ? '(mismatch) — re-type to confirm' : '(empty) — double-key to enable';
         status.textContent = nonEmpty ? 'Mismatch' : 'Not confirmed';
-        status.style.color = '';
       }
     }
 
-    first.addEventListener('input', updateState);
-    second.addEventListener('input', updateState);
+    first.addEventListener('input', ()=>updateState(false));
+    second.addEventListener('input', ()=>updateState(true));
 
-    dialogBtn.addEventListener('click', async ()=>{
+    dialogBtn.addEventListener('click', ()=>{
       if(!dialogBtn.classList.contains('enabled')) return;
-      const text = dialogBtn.textContent || '';
-      try{
-        await navigator.clipboard.writeText(text);
-        showToast('Copied: ' + (text || '(empty)'));
-      }catch(e){
-        // fallback
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        try{document.execCommand('copy'); showToast('Copied (fallback)');}finally{document.body.removeChild(ta)}
-      }
+      copyToClipboard(dialogBtn.textContent || '');
     });
 
-    clearBtn.addEventListener('click', ()=>{
-      first.value = '';
-      second.value = '';
-      updateState();
-      first.focus();
-    });
+    clearBtn.addEventListener('click', clearAll);
 
-    // initialize
-    updateState();
+    updateState(false);
   </script>
 </body>
 </html>
+
