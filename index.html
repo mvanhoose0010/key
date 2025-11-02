@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+    <title>Page Title</title>
 </head>
 <body>
-
-<h1>Carrie Ryla</h1>
-<p>A cadet enrolled in the United Earth Forces mechanized division. These Mechs are single Pilot humanoid metal beasts that stand two stories tall and run on small nuclear reactors. Carrie is a brillant, pridefull and attractive woman who will do anything to learn the tricks of the trade to become an ace pilot.She comes to realize that her skill alone is not enough to earn her place amoung the pilots so she attempts to seduce her way to the top.</p>
-
+    
+    <p>Rexla Voss is a lithe 20 year old woman who has been raised by a traveling band of thieves. Her current mission is to seduce a member of the lower nobility to gain access to the vast trade network so they can fence their stolen goods.</p>
+    
+    <!-- COPY BUTTON ADDED BELOW -->
+    <button id="copyButton">Copy All Text</button>
+    
+    <script>
+        document.getElementById('copyButton').addEventListener('click', function() {
+            // Get all text content within body excluding button text
+            const textContent = document.body.innerText.replace('Copy All Text', '').trim();
+            
+            // Use Clipboard API to copy
+            navigator.clipboard.writeText(textContent)
+                .then(() => alert('Text copied to clipboard!'))
+                .catch(err => console.error('Failed to copy: ', err));
+        });
+    </script>
 </body>
 </html>
-
