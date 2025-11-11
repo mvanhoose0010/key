@@ -1,25 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Page Title</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Production Records</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #004aad;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background-color: #fff;
+      border-bottom: 2px solid #ddd;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s ease;
+      min-width: 180px;
+    }
+
+    .tab:hover {
+      background-color: #f0f4ff;
+    }
+
+    .tab.active {
+      background-color: #004aad;
+      color: white;
+      border-bottom: 3px solid #004aad;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 2rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .placeholder {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      color: #333;
+      text-align: left;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #004aad;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .checklist input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .checklist label {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .checklist input[type="checkbox"]:checked + label {
+      text-decoration: line-through;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-    
-    <p>Rexla Voss is a lithe 20 year old woman who has been raised by a traveling band of thieves. Her current mission is to seduce a member of the lower nobility to gain access to the vast trade network so they can fence their stolen goods.</p>
-    
-    <!-- COPY BUTTON ADDED BELOW -->
-    <button id="copyButton">Copy All Text</button>
-    
-    <script>
-        document.getElementById('copyButton').addEventListener('click', function() {
-            // Get all text content within body excluding button text
-            const textContent = document.body.innerText.replace('Copy All Text', '').trim();
-            
-            // Use Clipboard API to copy
-            navigator.clipboard.writeText(textContent)
-                .then(() => alert('Text copied to clipboard!'))
-                .catch(err => console.error('Failed to copy: ', err));
-        });
-    </script>
+  <header>Production Record Manager</header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="batches">Line Batches</div>
+    <div class="tab" data-tab="solutions">Solution Records</div>
+    <div class="tab" data-tab="placards">Placards</div>
+    <div class="tab" data-tab="library">Batch Record Library</div>
+  </div>
+
+  <div id="batches" class="tab-content active">
+    <div class="placeholder">
+      <h2>Line Batches</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="lb1"><label for="lb1">Open Line Batch Organizer</label></li>
+        <li><input type="checkbox" id="lb2"><label for="lb2">Open print schedule</label></li>
+        <li><input type="checkbox" id="lb3"><label for="lb3">Open the batch record</label></li>
+        <li><input type="checkbox" id="lb4"><label for="lb4">View the batch record</label></li>
+        <li><input type="checkbox" id="lb5"><label for="lb5">Verify the letters/last digits if the WIP</label></li>
+        <li><input type="checkbox" id="lb6"><label for="lb6">Fill out the empty boxes of the Organizer</label></li>
+        <li><input type="checkbox" id="lb7"><label for="lb7">Determine if it's a controlled copy or not</label></li>
+        <li><input type="checkbox" id="lb8"><label for="lb8">If Controlled: Print Controlled Copy</label></li>
+        <li><input type="checkbox" id="lb9"><label for="lb9">If Not Controlled: Download Source</label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="solutions" class="tab-content">
+    <div class="placeholder">
+      <h2>Solution Records</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="sr1"><label for="sr1">Open Lot-Generator</label></li>
+        <li><input type="checkbox" id="sr2"><label for="sr2">Open print schedule</label></li>
+        <li><input type="checkbox" id="sr3"><label for="sr3">Open the batch record</label></li>
+        <li><input type="checkbox" id="sr4"><label for="sr4">View the batch record</label></li>
+        <li><input type="checkbox" id="sr5"><label for="sr5">Verify the letters/last digits of the SAP</label></li>
+        <li><input type="checkbox" id="sr6"><label for="sr6">Fill in the letters on the Generator</label></li>
+        <li><input type="checkbox" id="sr7"><label for="sr7">Click the date to fill it on the Generator</label></li>
+        <li><input type="checkbox" id="sr8"><label for="sr8">Select the quantity on the Generator</label></li>
+        <li><input type="checkbox" id="sr9"><label for="sr9">Press Generate</label></li>
+        <li><input type="checkbox" id="sr10"><label for="sr10">Determine if it's a controlled copy or not</label></li>
+        <li><input type="checkbox" id="sr11"><label for="sr11">If Controlled: Print Controlled Copy</label></li>
+        <li><input type="checkbox" id="sr12"><label for="sr12">Click each lot individually</label></li>
+        <li><input type="checkbox" id="sr13"><label for="sr13">If Not Controlled: Download Source</label></li>
+        <li><input type="checkbox" id="sr14"><label for="sr14">Press “Add all” to bulk lot</label></li>
+        <li><input type="checkbox" id="sr15"><label for="sr15">Copy the lot# from the bottom right text box</label></li>
+        <li><input type="checkbox" id="sr16"><label for="sr16">Fill out the lot, initials, date, and manufacturing date (YYYY-MM-DD)</label></li>
+        <li><input type="checkbox" id="sr17"><label for="sr17">Do not fill in Expiration Date</label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="placards" class="tab-content">
+    <div class="placeholder">
+      <h2>Placards</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="pl1"><label for="pl1">Open the Placard Companion</label></li>
+        <li><input type="checkbox" id="pl2"><label for="pl2">Ensure all batches are made and copied to Excel</label></li>
+        <li><input type="checkbox" id="pl3"><label for="pl3">Press the Reorder Output button</label></li>
+        <li><input type="checkbox" id="pl4"><label for="pl4">Press the Copy All button</label></li>
+        <li><input type="checkbox" id="pl5"><label for="pl5">Paste into the Placard Companion</label></li>
+        <li><input type="checkbox" id="pl6"><label for="pl6">Press the Toggle Transpose button</label></li>
+        <li><input type="checkbox" id="pl7"><label for="pl7">Use the Under Inspection Easy Label for the Placards</label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="library" class="tab-content">
+    <div class="placeholder">
+      <h2>Batch Record Library</h2>
+      <p>Open teams</p>
+      <p>Sample Collection Quality</p>
+      <p>Files</p>
+      <p>Open the Batch Record Library</p>
+      <p>To get to the bottom of the library</p>
+      <p>Control+End</p>
+      <p>Control+Left arrow</p>
+      <p>Control+Up arrow</p>
+      <p>Control+Up arrow</p>
+      <p>Control+Up arrow</p>
+      <p>Remember to fill out the Issued by, date, lot #, Machine, and for line batchs the expiration date</p>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
